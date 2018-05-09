@@ -27,10 +27,10 @@ gb = y.*((b_y - y).^2);                                 %right bound vector
 fb_ay = fb(1) + ((x-a_y)/(b_x-a_x))*(gb(1)-fb(1));      %upper bound vector
 
 %neumann boundary conditions
-% u(1)
-% 
-% [X,Y] = meshgrid(x,y);
-% f_exact = exp((-D)*(k^2)*y')*sin(k.*x);
+
+
+[X,Y] = meshgrid(x,y);
+f_exact = exp((-D)*(k^2)*y')*sin(k.*x);
 
 
 
