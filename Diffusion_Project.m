@@ -9,29 +9,31 @@
 % Solves a 2D diffusion equation over a rectangular domain 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%domain parameters
-dx = .1;
-dy = .1;
-a_x = 0;
-a_y = 0;
-b_x = 2*pi();
-b_y = 2*pi();
+clear all; close all; clc;
+%user inputs
+N=input('Choose "N" - the number of elements per row/column  ');
 
-x = a_x:dx:b_x;
-y = a_y:dy:b_y;
-D = 1;      
+%rectangular domain
+ax = 0;
+ay = 0;
+bx = 2*pi();
+by = 2*pi();
 
- %dirichlet boundary conditions
-fb = ((b_y - y).^2).*cos(pi()*y./b_y);                  %left  bound vector
-gb = y.*((b_y - y).^2);                                 %right bound vector
-fb_ay = fb(1) + ((x-a_y)/(b_x-a_x))*(gb(1)-fb(1));      %upper bound vector
-
-%neumann boundary conditions
-% u(1)
-% 
-% [X,Y] = meshgrid(x,y);
-% f_exact = exp((-D)*(k^2)*y')*sin(k.*x);
-
-
+%grid
+x = linspace(ax,bx,N);
+y = linspace(ay,by,N);
+[X,Y] = meshgrid(x,y);
+h = (bx-ax)/(N+1); 
 
 %boundary conditions
+u = zeros(N,N);
+fb = ((by-y).^2).*cos(y.*pi/by);
+gb = (by-y).^2.*y; 
+u(1,1:N-1) = fb(1,1:N-1);    %left bound
+u(1,1:N-1) = gb(1,1:N-1);    %right bound
+toolong = fb(1) + ((x-ax)/(bx-ax)).*(gb(1)-fb(1));
+u(1:N-1,1) = toolong(1:N-1,1); %lower bound
+toolong2 = fb(N) + ((x-ax)/(bx-ax)).*(gb(N)-fb(N));
+u(1:N,N) = toolong2(1:N,N);  %made up boundary, couldnt figure out ghost node
+
+surf(X,Y,u)
